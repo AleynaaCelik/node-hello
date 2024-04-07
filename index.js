@@ -1,9 +1,10 @@
-const http = require('http');
 const express = require('express');
+const http = require('http');
+const mysql = require('mysql');
+
+const app = express();
 const port = process.env.PORT || 3000;
 
-
-const mysql = require('mysql');
 const dbConnection = mysql.createConnection({
   host: 'lab-db.c58o6246ixe9.eu-west-1.rds.amazonaws.com',
   user: 'admin',
@@ -19,16 +20,14 @@ dbConnection.connect((err) => {
   console.log('Connected to the database.');
 });
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  const msg = 'Hello Node!\n'
-  res.end(msg);
-});
-
 app.get("/students", (req, res) => {
   dbConnection.query("SELECT * FROM students", (err, results, fields) => {
     if (err) {
       console.log("Database query error: ", err);
+      res.status(500).json({
+        status: "error",
+        message: "An error occurred while fetching students."
+      });
     } else {
       res.status(200).json({
         status: "success",
@@ -56,7 +55,8 @@ app.post("/students/add/:ad/:surname", (req, res)=> {
   });
 });
 
+const server = http.createServer(app);
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server running on http://localhost:${port}/`);
 });
