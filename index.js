@@ -57,6 +57,6 @@ app.post("/students/add/:ad/:surname", (req, res)=> {
 });
 
 
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}/`);
 });
