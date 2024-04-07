@@ -20,7 +20,7 @@ dbConnection.connect((err) => {
   console.log('Connected to the database.');
 });
 
-app.get("/students", (req, res) => {
+app.get("/student", (req, res) => {
   dbConnection.query("SELECT * FROM students", (err, results, fields) => {
     if (err) {
       console.log("Database query error: ", err);
@@ -37,7 +37,7 @@ app.get("/students", (req, res) => {
   });
 });
 
-app.post("/students/add/:ad/:surname", (req, res)=> {
+app.post("/student/add/:ad/:surname", (req, res)=> {
   const sql = "INSERT INTO students (ad, surname) VALUES (?, ?)";
   dbConnection.query(sql, [req.params.ad, req.params.surname], (err, results, fields) => {
     if (err) {
